@@ -1,22 +1,55 @@
-# Environments
-venv/
-.venv/
-env/
-
-# Python Cache
+# --- Python ---
 __pycache__/
 *.py[cod]
 *$py.class
+*.egg-info/
+.eggs/
+build/
+dist/
 
-# Databases
+# --- Virtual environments ---
+venv/
+.venv/
+env/
+.env
+.env.*
+!.env.example
+
+# --- Databases ---
 *.db
 *.sqlite3
+data/credit.db
 
-# Node / UI
+# --- Testing / linting / typing caches ---
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# --- Jupyter ---
+.ipynb_checkpoints/
+
+# --- Node / React UI (ui/) ---
 ui/node_modules/
 ui/dist/
 ui/.env.local
+ui/.vite/
+ui/coverage/
 
-# OS files
+# --- IDE / editor ---
+.vscode/
+.idea/
+*.swp
+
+# --- OS files ---
 .DS_Store
 Thumbs.db
+
+# --- Logs ---
+*.log
+logs/
+
+# --- Model artifacts (uncomment if you want artifacts regenerated via train.py
+# instead of committed to git — currently the repo ships pre-trained artifacts) ---
+# artifacts/*.pkl
