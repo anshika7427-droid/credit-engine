@@ -26,7 +26,7 @@ export const App: React.FC = () => {
   // Preloader State (runs once on initial mount)
   const [showPreloader, setShowPreloader] = useState<boolean>(true);
 
-  // Dynamic Navigation Theme ("light" over white, "dark" over dark & Klein blue)
+  // Dynamic Navigation Theme
   const [navTheme, setNavTheme] = useState<"light" | "dark">("light");
 
   // Primary Routing / View State
@@ -249,11 +249,11 @@ export const App: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#F4F4F6] text-[#0A0A0C] flex flex-col font-sans selection:bg-[#0029FF] selection:text-white">
+    <div className="min-h-screen bg-[#F4F7F6] text-[#111E25] flex flex-col font-sans selection:bg-[#ECFEFF] selection:text-[#0E7490]">
       {/* Veyra Initial Screen Preloader */}
       {showPreloader && <Preloader onComplete={() => setShowPreloader(false)} />}
 
-      {/* Dynamic Veyra Header */}
+      {/* Transparent Frosted Sticky Navbar */}
       <VeyraNav
         activeView={currentView}
         onNavigate={(view) => setCurrentView(view)}
@@ -266,16 +266,16 @@ export const App: React.FC = () => {
         navTheme={currentView === "console" ? "light" : navTheme}
       />
 
-      {/* Primary Workspace View Switcher with Slide/Fade Transition */}
+      {/* Primary Workspace View Switcher with Scale & Opacity Page Cross-Fade */}
       <main className="flex-1 w-full relative">
         <AnimatePresence mode="wait">
           {currentView === "landing" ? (
             <motion.div
               key="landing"
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -12 }}
-              transition={{ duration: 0.35, ease: "easeInOut" }}
+              initial={{ opacity: 0, scale: 0.98 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.98 }}
+              transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
             >
               <LandingPage
                 onLaunchConsole={handleLaunchConsole}
@@ -287,11 +287,11 @@ export const App: React.FC = () => {
           ) : (
             <motion.div
               key="console"
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -12 }}
-              transition={{ duration: 0.35, ease: "easeInOut" }}
-              className="pt-16"
+              initial={{ opacity: 0, scale: 0.98 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.98 }}
+              transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+              className="pt-16 md:pt-20"
             >
               <UnderwritingConsole
                 profile={profile}
@@ -318,7 +318,7 @@ export const App: React.FC = () => {
       </main>
 
       {/* Global Minimalist Footer */}
-      <footer className="border-t border-[#E4E4E7] bg-white py-4 px-4 lg:px-8 text-center text-xs text-[#71717A] font-mono">
+      <footer className="border-t border-[#DDE5E5] bg-white py-4 px-4 lg:px-8 text-center text-xs text-[#4F616B] font-mono">
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2">
           <span>AURA &bull; AUTONOMOUS ALTERNATIVE CREDIT OS</span>
           <span>FASTAPI ENDPOINT: <code>POST http://127.0.0.1:8000/api/v1/score</code></span>

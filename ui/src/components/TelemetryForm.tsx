@@ -65,23 +65,23 @@ export const TelemetryForm: React.FC<TelemetryFormProps> = ({
 
   const getFieldPulseClass = (field: keyof BorrowerProfile) => {
     return pulsingFields.has(field)
-      ? "ring-1 ring-[#0029FF] bg-blue-50/50 transition-all duration-500"
+      ? "ring-1 ring-steel-primary bg-steel-tint transition-all duration-500"
       : "transition-colors duration-200";
   };
 
   return (
-    <div className="bg-white border border-[#E4E4E7] flex flex-col shadow-sm overflow-hidden">
+    <div className="bg-vapor-card border border-vapor-border flex flex-col shadow-sm overflow-hidden">
       {/* Form Header */}
-      <div className="p-4 border-b border-[#E4E4E7] bg-[#F4F4F6] flex items-center justify-between">
+      <div className="p-4 border-b border-vapor-border bg-vapor-subtle flex items-center justify-between">
         <div>
-          <span className="font-mono text-[10px] uppercase tracking-widest text-[#52525B] block">
+          <span className="font-mono text-[10px] uppercase tracking-widest text-steel-muted block">
             [ INGESTION WORKBENCH ]
           </span>
-          <h2 className="text-sm font-bold text-[#0A0A0C] tracking-tight m-0">
+          <h2 className="text-sm font-bold text-steel-ink tracking-tight m-0">
             Application Telemetry Vectors
           </h2>
         </div>
-        <span className="font-mono text-[10px] uppercase px-2 py-0.5 bg-white text-[#0029FF] border border-[#E4E4E7] font-bold">
+        <span className="font-mono text-[10px] uppercase px-2 py-0.5 bg-vapor-card text-steel-primary border border-vapor-border font-bold">
           9 VECTORS
         </span>
       </div>
@@ -89,23 +89,23 @@ export const TelemetryForm: React.FC<TelemetryFormProps> = ({
       {/* Accordion List Body */}
       <div className="p-4 space-y-3 flex-1 overflow-y-auto max-h-[calc(100vh-280px)] lg:max-h-none">
         {/* Accordion 1: Persona & Core Inflows */}
-        <div className="border border-[#E4E4E7] bg-white">
+        <div className="border border-vapor-border bg-vapor-card">
           <button
             type="button"
             onClick={() => toggleSection("persona")}
-            className="w-full px-4 py-3 bg-[#F4F4F6] hover:bg-slate-100 flex items-center justify-between text-left transition-colors cursor-pointer"
+            className="w-full px-4 py-3 bg-vapor-subtle hover:bg-vapor-canvas flex items-center justify-between text-left transition-colors cursor-pointer"
           >
-            <div className="flex items-center gap-2 text-xs font-bold font-mono uppercase text-[#0A0A0C]">
-              <Wallet className="w-3.5 h-3.5 text-[#0029FF]" />
+            <div className="flex items-center gap-2 text-xs font-bold font-mono uppercase text-steel-ink">
+              <Wallet className="w-3.5 h-3.5 text-steel-primary" />
               <span>01 // Inflow &amp; Classification</span>
             </div>
             <div className="flex items-center gap-2">
-              <span className="text-[11px] font-mono text-[#0029FF] font-bold">
+              <span className="text-[11px] font-mono text-steel-primary font-bold">
                 {formatINR(profile.monthly_inflow)}
               </span>
               <ChevronDown
                 className={cn(
-                  "w-3.5 h-3.5 text-slate-500 transition-transform duration-200",
+                  "w-3.5 h-3.5 text-steel-muted transition-transform duration-200",
                   openSections.persona && "rotate-180"
                 )}
               />
@@ -121,10 +121,10 @@ export const TelemetryForm: React.FC<TelemetryFormProps> = ({
                 transition={{ duration: 0.2 }}
                 className="overflow-hidden"
               >
-                <div className="p-4 space-y-4 border-t border-[#E4E4E7]">
+                <div className="p-4 space-y-4 border-t border-vapor-border">
                   {/* Borrower Segment Toggle Buttons */}
                   <div>
-                    <label className="block text-[10px] font-mono uppercase tracking-widest text-[#52525B] mb-2 font-semibold">
+                    <label className="block text-[10px] font-mono uppercase tracking-widest text-steel-muted mb-2 font-semibold">
                       Classification
                     </label>
                     <div className="grid grid-cols-3 gap-2">
@@ -146,8 +146,8 @@ export const TelemetryForm: React.FC<TelemetryFormProps> = ({
                               "p-2.5 border text-center transition-all cursor-pointer flex flex-col items-center justify-center gap-1",
                               getFieldPulseClass("borrower_type"),
                               isSelected
-                                ? "bg-[#0029FF] border-[#0029FF] text-white"
-                                : "bg-white border-[#E4E4E7] text-[#0A0A0C] hover:bg-[#F4F4F6]"
+                                ? "bg-steel-primary border-steel-primary text-white"
+                                : "bg-vapor-card border-vapor-border text-steel-ink hover:bg-vapor-subtle"
                             )}
                           >
                             <Icon className="w-3.5 h-3.5" />
@@ -160,13 +160,13 @@ export const TelemetryForm: React.FC<TelemetryFormProps> = ({
                     </div>
                   </div>
 
-                  {/* Monthly Inflow Currency Input & Slider with #0029FF track */}
+                  {/* Monthly Inflow Currency Input & Slider with Steel Teal track */}
                   <div className={getFieldPulseClass("monthly_inflow")}>
                     <div className="flex items-center justify-between mb-1.5 text-xs font-mono">
-                      <label className="text-[#52525B] uppercase text-[11px]">
+                      <label className="text-steel-muted uppercase text-[11px]">
                         Monthly Verified Inflow
                       </label>
-                      <span className="font-bold text-[#0029FF]">
+                      <span className="font-bold text-steel-primary bg-steel-tint px-2 py-0.5 rounded">
                         {formatINR(profile.monthly_inflow)}
                       </span>
                     </div>
@@ -180,7 +180,7 @@ export const TelemetryForm: React.FC<TelemetryFormProps> = ({
                         onChange={(e) =>
                           updateField("monthly_inflow", Number(e.target.value) || 0)
                         }
-                        className="w-28 px-2.5 py-1.5 bg-white border border-[#E4E4E7] text-xs font-mono text-[#0A0A0C] focus:outline-none focus:border-[#0029FF]"
+                        className="w-28 px-2.5 py-1.5 bg-vapor-card border border-vapor-border text-xs font-mono text-steel-ink focus:outline-none focus:border-steel-primary"
                       />
                       <input
                         type="range"
@@ -191,7 +191,7 @@ export const TelemetryForm: React.FC<TelemetryFormProps> = ({
                         onChange={(e) =>
                           updateField("monthly_inflow", Number(e.target.value))
                         }
-                        className="flex-1 h-1 bg-[#E4E4E7] rounded-none appearance-none cursor-pointer accent-[#0029FF]"
+                        className="flex-1 h-1.5 bg-vapor-subtle rounded-none appearance-none cursor-pointer accent-steel-primary"
                       />
                     </div>
                   </div>
@@ -202,23 +202,23 @@ export const TelemetryForm: React.FC<TelemetryFormProps> = ({
         </div>
 
         {/* Accordion 2: UPI & Cashflow Dynamics */}
-        <div className="border border-[#E4E4E7] bg-white">
+        <div className="border border-vapor-border bg-vapor-card">
           <button
             type="button"
             onClick={() => toggleSection("cashflow")}
-            className="w-full px-4 py-3 bg-[#F4F4F6] hover:bg-slate-100 flex items-center justify-between text-left transition-colors cursor-pointer"
+            className="w-full px-4 py-3 bg-vapor-subtle hover:bg-vapor-canvas flex items-center justify-between text-left transition-colors cursor-pointer"
           >
-            <div className="flex items-center gap-2 text-xs font-bold font-mono uppercase text-[#0A0A0C]">
-              <ArrowDownUp className="w-3.5 h-3.5 text-[#0029FF]" />
+            <div className="flex items-center gap-2 text-xs font-bold font-mono uppercase text-steel-ink">
+              <ArrowDownUp className="w-3.5 h-3.5 text-steel-primary" />
               <span>02 // Cashflow Velocity</span>
             </div>
             <div className="flex items-center gap-2">
-              <span className="text-[11px] font-mono text-[#52525B]">
+              <span className="text-[11px] font-mono text-steel-muted">
                 {profile.upi_tx_count_monthly} tx &bull; D/C {profile.upi_debit_to_credit_ratio.toFixed(2)}
               </span>
               <ChevronDown
                 className={cn(
-                  "w-3.5 h-3.5 text-slate-500 transition-transform duration-200",
+                  "w-3.5 h-3.5 text-steel-muted transition-transform duration-200",
                   openSections.cashflow && "rotate-180"
                 )}
               />
@@ -234,14 +234,14 @@ export const TelemetryForm: React.FC<TelemetryFormProps> = ({
                 transition={{ duration: 0.2 }}
                 className="overflow-hidden"
               >
-                <div className="p-4 space-y-4 border-t border-[#E4E4E7]">
+                <div className="p-4 space-y-4 border-t border-vapor-border">
                   {/* Monthly UPI Transactions */}
                   <div className={getFieldPulseClass("upi_tx_count_monthly")}>
                     <div className="flex items-center justify-between mb-1.5 text-xs font-mono">
-                      <label className="text-[#52525B] uppercase text-[11px]">
+                      <label className="text-steel-muted uppercase text-[11px]">
                         Monthly UPI Velocity
                       </label>
-                      <span className="font-bold text-[#0A0A0C]">
+                      <span className="font-bold text-steel-primary bg-steel-tint px-2 py-0.5 rounded">
                         {profile.upi_tx_count_monthly} tx / mo
                       </span>
                     </div>
@@ -257,7 +257,7 @@ export const TelemetryForm: React.FC<TelemetryFormProps> = ({
                             Number(e.target.value) || 0
                           )
                         }
-                        className="w-20 px-2.5 py-1.5 bg-white border border-[#E4E4E7] text-xs font-mono text-[#0A0A0C] focus:outline-none focus:border-[#0029FF]"
+                        className="w-20 px-2.5 py-1.5 bg-vapor-card border border-vapor-border text-xs font-mono text-steel-ink focus:outline-none focus:border-steel-primary"
                       />
                       <input
                         type="range"
@@ -270,7 +270,7 @@ export const TelemetryForm: React.FC<TelemetryFormProps> = ({
                             Number(e.target.value)
                           )
                         }
-                        className="flex-1 h-1 bg-[#E4E4E7] rounded-none appearance-none cursor-pointer accent-[#0029FF]"
+                        className="flex-1 h-1.5 bg-vapor-subtle rounded-none appearance-none cursor-pointer accent-steel-primary"
                       />
                     </div>
                   </div>
@@ -278,10 +278,10 @@ export const TelemetryForm: React.FC<TelemetryFormProps> = ({
                   {/* Debit to Credit Ratio */}
                   <div className={getFieldPulseClass("upi_debit_to_credit_ratio")}>
                     <div className="flex items-center justify-between mb-1.5 text-xs font-mono">
-                      <label className="text-[#52525B] uppercase text-[11px]">
+                      <label className="text-steel-muted uppercase text-[11px]">
                         Debit / Credit Ratio
                       </label>
-                      <span className="font-bold text-[#0A0A0C]">
+                      <span className="font-bold text-steel-ink bg-vapor-subtle px-2 py-0.5 rounded">
                         {profile.upi_debit_to_credit_ratio.toFixed(2)}
                       </span>
                     </div>
@@ -298,7 +298,7 @@ export const TelemetryForm: React.FC<TelemetryFormProps> = ({
                             Number(e.target.value) || 0
                           )
                         }
-                        className="w-20 px-2.5 py-1.5 bg-white border border-[#E4E4E7] text-xs font-mono text-[#0A0A0C] focus:outline-none focus:border-[#0029FF]"
+                        className="w-20 px-2.5 py-1.5 bg-vapor-card border border-vapor-border text-xs font-mono text-steel-ink focus:outline-none focus:border-steel-primary"
                       />
                       <input
                         type="range"
@@ -312,7 +312,7 @@ export const TelemetryForm: React.FC<TelemetryFormProps> = ({
                             Number(e.target.value)
                           )
                         }
-                        className="flex-1 h-1 bg-[#E4E4E7] rounded-none appearance-none cursor-pointer accent-[#0029FF]"
+                        className="flex-1 h-1.5 bg-vapor-subtle rounded-none appearance-none cursor-pointer accent-steel-primary"
                       />
                     </div>
                   </div>
@@ -320,10 +320,10 @@ export const TelemetryForm: React.FC<TelemetryFormProps> = ({
                   {/* Cashflow Volatility */}
                   <div className={getFieldPulseClass("cashflow_volatility")}>
                     <div className="flex items-center justify-between mb-1.5 text-xs font-mono">
-                      <label className="text-[#52525B] uppercase text-[11px]">
+                      <label className="text-steel-muted uppercase text-[11px]">
                         Volatility Index (σ / μ)
                       </label>
-                      <span className="font-bold text-[#0A0A0C]">
+                      <span className="font-bold text-steel-ink bg-vapor-subtle px-2 py-0.5 rounded">
                         {profile.cashflow_volatility.toFixed(2)}
                       </span>
                     </div>
@@ -340,7 +340,7 @@ export const TelemetryForm: React.FC<TelemetryFormProps> = ({
                             Number(e.target.value) || 0
                           )
                         }
-                        className="w-20 px-2.5 py-1.5 bg-white border border-[#E4E4E7] text-xs font-mono text-[#0A0A0C] focus:outline-none focus:border-[#0029FF]"
+                        className="w-20 px-2.5 py-1.5 bg-vapor-card border border-vapor-border text-xs font-mono text-steel-ink focus:outline-none focus:border-steel-primary"
                       />
                       <input
                         type="range"
@@ -354,7 +354,7 @@ export const TelemetryForm: React.FC<TelemetryFormProps> = ({
                             Number(e.target.value)
                           )
                         }
-                        className="flex-1 h-1 bg-[#E4E4E7] rounded-none appearance-none cursor-pointer accent-[#0029FF]"
+                        className="flex-1 h-1.5 bg-vapor-subtle rounded-none appearance-none cursor-pointer accent-steel-primary"
                       />
                     </div>
                   </div>
@@ -365,23 +365,23 @@ export const TelemetryForm: React.FC<TelemetryFormProps> = ({
         </div>
 
         {/* Accordion 3: Discipline & Regularity */}
-        <div className="border border-[#E4E4E7] bg-white">
+        <div className="border border-vapor-border bg-vapor-card">
           <button
             type="button"
             onClick={() => toggleSection("discipline")}
-            className="w-full px-4 py-3 bg-[#F4F4F6] hover:bg-slate-100 flex items-center justify-between text-left transition-colors cursor-pointer"
+            className="w-full px-4 py-3 bg-vapor-subtle hover:bg-vapor-canvas flex items-center justify-between text-left transition-colors cursor-pointer"
           >
-            <div className="flex items-center gap-2 text-xs font-bold font-mono uppercase text-[#0A0A0C]">
-              <Calendar className="w-3.5 h-3.5 text-[#0029FF]" />
+            <div className="flex items-center gap-2 text-xs font-bold font-mono uppercase text-steel-ink">
+              <Calendar className="w-3.5 h-3.5 text-steel-primary" />
               <span>03 // Discipline &amp; Delinquency</span>
             </div>
             <div className="flex items-center gap-2">
-              <span className="text-[11px] font-mono text-[#52525B]">
+              <span className="text-[11px] font-mono text-steel-muted">
                 {profile.utility_payment_delay_days}d lag
               </span>
               <ChevronDown
                 className={cn(
-                  "w-3.5 h-3.5 text-slate-500 transition-transform duration-200",
+                  "w-3.5 h-3.5 text-steel-muted transition-transform duration-200",
                   openSections.discipline && "rotate-180"
                 )}
               />
@@ -397,12 +397,12 @@ export const TelemetryForm: React.FC<TelemetryFormProps> = ({
                 transition={{ duration: 0.2 }}
                 className="overflow-hidden"
               >
-                <div className="p-4 space-y-4 border-t border-[#E4E4E7]">
+                <div className="p-4 space-y-4 border-t border-vapor-border">
                   {/* Utility Payment Delay */}
                   <div className={getFieldPulseClass("utility_payment_delay_days")}>
                     <div className="flex items-center justify-between mb-1.5 text-xs font-mono">
                       <div className="flex items-center gap-1.5">
-                        <label className="text-[#52525B] uppercase text-[11px]">
+                        <label className="text-steel-muted uppercase text-[11px]">
                           Utility Delay Lag
                         </label>
                         {profile.utility_payment_delay_days > 25 && (
@@ -413,10 +413,10 @@ export const TelemetryForm: React.FC<TelemetryFormProps> = ({
                       </div>
                       <span
                         className={cn(
-                          "font-bold",
+                          "font-bold px-2 py-0.5 rounded",
                           profile.utility_payment_delay_days > 25
-                            ? "text-rose-600"
-                            : "text-[#0A0A0C]"
+                            ? "text-rose-600 bg-rose-50"
+                            : "text-steel-ink bg-vapor-subtle"
                         )}
                       >
                         {profile.utility_payment_delay_days} days
@@ -434,7 +434,7 @@ export const TelemetryForm: React.FC<TelemetryFormProps> = ({
                             Number(e.target.value) || 0
                           )
                         }
-                        className="w-20 px-2.5 py-1.5 bg-white border border-[#E4E4E7] text-xs font-mono text-[#0A0A0C] focus:outline-none focus:border-[#0029FF]"
+                        className="w-20 px-2.5 py-1.5 bg-vapor-card border border-vapor-border text-xs font-mono text-steel-ink focus:outline-none focus:border-steel-primary"
                       />
                       <input
                         type="range"
@@ -447,7 +447,7 @@ export const TelemetryForm: React.FC<TelemetryFormProps> = ({
                             Number(e.target.value)
                           )
                         }
-                        className="flex-1 h-1 bg-[#E4E4E7] rounded-none appearance-none cursor-pointer accent-[#0029FF]"
+                        className="flex-1 h-1.5 bg-vapor-subtle rounded-none appearance-none cursor-pointer accent-steel-primary"
                       />
                     </div>
                   </div>
@@ -455,10 +455,10 @@ export const TelemetryForm: React.FC<TelemetryFormProps> = ({
                   {/* Telecom Recharge Consistency */}
                   <div className={getFieldPulseClass("telecom_recharge_regularity")}>
                     <div className="flex items-center justify-between mb-1.5 text-xs font-mono">
-                      <label className="text-[#52525B] uppercase text-[11px]">
+                      <label className="text-steel-muted uppercase text-[11px]">
                         Telecom Habit
                       </label>
-                      <span className="font-bold text-[#0029FF]">
+                      <span className="font-bold text-steel-primary bg-steel-tint px-2 py-0.5 rounded">
                         {Math.round(profile.telecom_recharge_regularity * 100)}%
                       </span>
                     </div>
@@ -475,7 +475,7 @@ export const TelemetryForm: React.FC<TelemetryFormProps> = ({
                             Number(e.target.value) || 0
                           )
                         }
-                        className="w-20 px-2.5 py-1.5 bg-white border border-[#E4E4E7] text-xs font-mono text-[#0A0A0C] focus:outline-none focus:border-[#0029FF]"
+                        className="w-20 px-2.5 py-1.5 bg-vapor-card border border-vapor-border text-xs font-mono text-steel-ink focus:outline-none focus:border-steel-primary"
                       />
                       <input
                         type="range"
@@ -489,7 +489,7 @@ export const TelemetryForm: React.FC<TelemetryFormProps> = ({
                             Number(e.target.value)
                           )
                         }
-                        className="flex-1 h-1 bg-[#E4E4E7] rounded-none appearance-none cursor-pointer accent-[#0029FF]"
+                        className="flex-1 h-1.5 bg-vapor-subtle rounded-none appearance-none cursor-pointer accent-steel-primary"
                       />
                     </div>
                   </div>
@@ -516,12 +516,12 @@ export const TelemetryForm: React.FC<TelemetryFormProps> = ({
       </div>
 
       {/* Action Footer Button */}
-      <div className="p-4 border-t border-[#E4E4E7] bg-white">
+      <div className="p-4 border-t border-vapor-border bg-vapor-card">
         <button
           type="button"
           onClick={onSubmit}
           disabled={isLoading}
-          className="w-full py-3 px-4 bg-[#0029FF] hover:bg-black text-white font-mono font-bold text-xs uppercase tracking-widest transition-colors flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
+          className="w-full py-3.5 px-4 bg-steel-primary hover:bg-steel-hover text-white font-mono font-bold text-xs uppercase tracking-widest transition-colors flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50 shadow-sm"
         >
           {isLoading ? (
             <>

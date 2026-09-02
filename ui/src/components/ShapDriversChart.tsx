@@ -29,19 +29,19 @@ export const ShapDriversChart: React.FC<ShapDriversChartProps> = ({
     <div className="space-y-4 font-mono">
       {/* Summary Row */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-        <div className="p-3.5 bg-blue-50/50 border border-[#0029FF]/30 flex items-center justify-between">
+        <div className="p-3.5 bg-steel-tint border border-steel-primary/30 flex items-center justify-between">
           <div className="flex items-center gap-2.5">
-            <TrendingUp className="w-4 h-4 text-[#0029FF] shrink-0" />
+            <TrendingUp className="w-4 h-4 text-steel-primary shrink-0" />
             <div>
-              <span className="text-[10px] uppercase text-[#0029FF] font-bold block">
+              <span className="text-[10px] uppercase text-steel-primary font-bold block">
                 POSITIVE SCORE LIFT
               </span>
-              <span className="text-base font-extrabold text-[#0029FF]">
+              <span className="text-base font-extrabold text-steel-primary">
                 +{totalPositivePoints} PTS
               </span>
             </div>
           </div>
-          <span className="text-[10px] text-[#0029FF] bg-white px-2 py-0.5 border border-[#0029FF]/30 font-semibold">
+          <span className="text-[10px] text-steel-primary bg-vapor-card px-2 py-0.5 border border-steel-primary/30 font-semibold">
             {positives.length} DRIVERS
           </span>
         </div>
@@ -58,39 +58,39 @@ export const ShapDriversChart: React.FC<ShapDriversChartProps> = ({
               </span>
             </div>
           </div>
-          <span className="text-[10px] text-rose-800 bg-white px-2 py-0.5 border border-rose-200 font-semibold">
+          <span className="text-[10px] text-rose-800 bg-vapor-card px-2 py-0.5 border border-rose-200 font-semibold">
             {negatives.length} FLAGS
           </span>
         </div>
 
-        <div className="p-3.5 bg-[#F4F4F6] border border-[#E4E4E7] flex items-center justify-between">
+        <div className="p-3.5 bg-vapor-subtle border border-vapor-border flex items-center justify-between">
           <div>
-            <span className="text-[10px] uppercase text-[#52525B] font-bold block">
+            <span className="text-[10px] uppercase text-steel-muted font-bold block">
               NET SCORE SHIFT
             </span>
             <span
               className={cn(
                 "text-base font-extrabold",
-                netImpact >= 0 ? "text-[#0029FF]" : "text-rose-700"
+                netImpact >= 0 ? "text-steel-primary" : "text-rose-700"
               )}
             >
               {netImpact >= 0 ? `+${netImpact}` : netImpact} PTS
             </span>
           </div>
-          <span className="text-[10px] text-[#52525B] bg-white px-2 py-0.5 border border-[#E4E4E7]">
+          <span className="text-[10px] text-steel-muted bg-vapor-card px-2 py-0.5 border border-vapor-border">
             BASE: 580
           </span>
         </div>
       </div>
 
       {/* Feature Weights Breakdown */}
-      <div className="bg-white border border-[#E4E4E7] p-4 space-y-3.5 shadow-sm">
-        <div className="flex items-center justify-between text-xs pb-2 border-b border-[#E4E4E7]">
-          <span className="font-bold text-[#0A0A0C]">
+      <div className="bg-vapor-card border border-vapor-border p-4 space-y-3.5 shadow-sm">
+        <div className="flex items-center justify-between text-xs pb-2 border-b border-vapor-border">
+          <span className="font-bold text-steel-ink">
             [ TREESHAP ATTRIBUTION VECTOR BREAKDOWN ]
           </span>
-          <span className="text-[10px] text-[#71717A]">
-            BLUE: LIFT &bull; RED: RISK
+          <span className="text-[10px] text-steel-muted">
+            TEAL: LIFT &bull; RED: RISK
           </span>
         </div>
 
@@ -105,10 +105,10 @@ export const ShapDriversChart: React.FC<ShapDriversChartProps> = ({
               <div key={driver.featureKey} className="space-y-1">
                 <div className="flex items-center justify-between text-xs">
                   <div className="flex items-center gap-2">
-                    <span className="font-semibold text-[#0A0A0C] font-sans">
+                    <span className="font-semibold text-steel-ink font-sans">
                       {driver.label}
                     </span>
-                    <span className="text-[10px] text-[#52525B] bg-[#F4F4F6] px-1.5 py-0.5 border border-[#E4E4E7]">
+                    <span className="text-[10px] text-steel-muted bg-vapor-subtle px-1.5 py-0.5 border border-vapor-border">
                       {driver.displayValue}
                     </span>
                   </div>
@@ -117,7 +117,7 @@ export const ShapDriversChart: React.FC<ShapDriversChartProps> = ({
                     className={cn(
                       "font-bold text-xs px-2 py-0.5",
                       isPositive
-                        ? "text-[#0029FF] bg-blue-50 border border-[#0029FF]/30"
+                        ? "text-steel-primary bg-steel-tint border border-steel-primary/30"
                         : "text-rose-700 bg-rose-50 border border-rose-200"
                     )}
                   >
@@ -125,17 +125,17 @@ export const ShapDriversChart: React.FC<ShapDriversChartProps> = ({
                   </span>
                 </div>
 
-                <div className="w-full bg-[#F4F4F6] h-1.5 overflow-hidden flex border border-[#E4E4E7]">
+                <div className="w-full bg-vapor-subtle h-1.5 overflow-hidden flex border border-vapor-border">
                   <div
                     className={cn(
                       "h-full transition-all duration-500",
-                      isPositive ? "bg-[#0029FF]" : "bg-rose-600"
+                      isPositive ? "bg-steel-primary" : "bg-rose-600"
                     )}
                     style={{ width: `${Math.max(4, barPct)}%` }}
                   />
                 </div>
 
-                <p className="text-[11px] text-[#71717A] font-sans m-0 leading-tight">
+                <p className="text-[11px] text-steel-muted font-sans m-0 leading-tight">
                   {driver.description}
                 </p>
               </div>
@@ -144,8 +144,8 @@ export const ShapDriversChart: React.FC<ShapDriversChartProps> = ({
         </div>
       </div>
 
-      <div className="flex items-center gap-1.5 text-[10px] text-[#71717A] px-1">
-        <Info className="w-3 h-3 text-[#0029FF] shrink-0" />
+      <div className="flex items-center gap-1.5 text-[10px] text-steel-muted px-1">
+        <Info className="w-3 h-3 text-steel-primary shrink-0" />
         <span>
           Computed via TreeSHAP tree explainer with exact Shapley attributions.
         </span>

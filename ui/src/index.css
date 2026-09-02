@@ -3,25 +3,15 @@
 @tailwind utilities;
 
 body {
-  @apply bg-[#fafafa] text-slate-900 antialiased min-h-screen selection:bg-slate-900 selection:text-white;
+  background-color: #F4F7F6;
+  color: #111E25;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   font-feature-settings: "cv02", "cv03", "cv04", "cv11";
 }
 
-/* Custom scrollbars for data tables and logs (Light editorial) */
-::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
-}
-
-::-webkit-scrollbar-track {
-  background: #f8fafc;
-}
-
-::-webkit-scrollbar-thumb {
-  background: #cbd5e1;
-  border-radius: 9999px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: #94a3b8;
+::selection {
+  background-color: #ECFEFF;
+  color: #0E7490;
 }

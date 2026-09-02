@@ -54,7 +54,7 @@ export const VerdictHero: React.FC<VerdictHeroProps> = ({
           particleCount: 50,
           spread: 55,
           origin: { y: 0.6 },
-          colors: ["#0029FF", "#0A0A0C", "#00C2FF", "#D97706"],
+          colors: ["#0E7490", "#111E25", "#ECFEFF", "#155E75"],
           ticks: 180,
         });
       } catch (e) {
@@ -79,7 +79,7 @@ export const VerdictHero: React.FC<VerdictHeroProps> = ({
   const getStatusIcon = () => {
     switch (decision.status) {
       case "APPROVED":
-        return <CheckCircle2 className="w-5 h-5 text-[#0029FF]" />;
+        return <CheckCircle2 className="w-5 h-5 text-steel-primary" />;
       case "MANUAL_REVIEW":
         return <AlertTriangle className="w-5 h-5 text-amber-700" />;
       case "REJECTED":
@@ -89,9 +89,9 @@ export const VerdictHero: React.FC<VerdictHeroProps> = ({
   };
 
   return (
-    <div className="bg-white border border-[#E4E4E7] p-6 relative overflow-hidden shadow-sm">
+    <div className="bg-vapor-card border border-vapor-border p-6 relative overflow-hidden shadow-sm">
       <div className="flex flex-col md:flex-row items-center justify-between gap-6 relative z-10">
-        {/* Left: Minimal Circular Score Gauge with #0029FF */}
+        {/* Left: Minimal Circular Score Gauge */}
         <div className="flex flex-col items-center justify-center shrink-0">
           <div className="relative w-40 h-40 flex items-center justify-center">
             <svg
@@ -103,7 +103,7 @@ export const VerdictHero: React.FC<VerdictHeroProps> = ({
                 cy="85"
                 r={radius}
                 fill="transparent"
-                stroke="#E4E4E7"
+                stroke="#EBF1F0"
                 strokeWidth="10"
                 strokeDasharray={`${arcLength} ${circumference}`}
                 strokeLinecap="square"
@@ -124,20 +124,20 @@ export const VerdictHero: React.FC<VerdictHeroProps> = ({
 
             {/* Center Value */}
             <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
-              <span className="text-[10px] uppercase font-mono tracking-widest text-[#71717A] font-semibold">
+              <span className="text-[10px] uppercase font-mono tracking-widest text-steel-muted font-semibold">
                 SCORE
               </span>
-              <span className="font-mono text-4xl sm:text-5xl font-extrabold tracking-tighter text-[#0A0A0C]">
+              <span className="font-mono text-4xl sm:text-5xl font-extrabold tracking-tighter text-steel-ink">
                 {displayScore}
               </span>
-              <span className="text-[10px] font-mono text-[#52525B]">
+              <span className="text-[10px] font-mono text-steel-muted">
                 300–900 FICO
               </span>
             </div>
           </div>
 
           <div className="flex items-center gap-1.5 mt-1 font-mono">
-            <span className="text-[10px] text-[#71717A] uppercase">TIER:</span>
+            <span className="text-[10px] text-steel-muted uppercase">TIER:</span>
             <span
               className={cn(
                 "text-[10px] font-bold px-2 py-0.5 border uppercase tracking-wider",
@@ -151,9 +151,9 @@ export const VerdictHero: React.FC<VerdictHeroProps> = ({
 
         {/* Right: Decision Verdict, Prob of Default & Telemetry Details */}
         <div className="flex-1 w-full space-y-4">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-[#E4E4E7]">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-vapor-border">
             <div>
-              <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-[#52525B]">
+              <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-steel-muted">
                 [ UNDERWRITING VERDICT ]
               </span>
               <div className="flex items-center gap-2 mt-0.5">
@@ -165,20 +165,20 @@ export const VerdictHero: React.FC<VerdictHeroProps> = ({
             </div>
 
             {/* Application ID pill */}
-            <div className="flex items-center gap-1.5 bg-[#F4F4F6] border border-[#E4E4E7] px-3 py-1.5 text-xs font-mono text-[#52525B]">
-              <Hash className="w-3.5 h-3.5 text-slate-400" />
+            <div className="flex items-center gap-1.5 bg-vapor-subtle border border-vapor-border px-3 py-1.5 text-xs font-mono text-steel-muted">
+              <Hash className="w-3.5 h-3.5 text-steel-muted" />
               <span className="truncate max-w-[140px] sm:max-w-[170px]">
                 {decision.application_id}
               </span>
               <button
                 onClick={copyAppId}
                 title="Copy Application ID"
-                className="hover:text-black transition-colors p-1 cursor-pointer"
+                className="hover:text-steel-ink transition-colors p-1 cursor-pointer"
               >
                 {copied ? (
-                  <Check className="w-3.5 h-3.5 text-[#0029FF]" />
+                  <Check className="w-3.5 h-3.5 text-steel-primary" />
                 ) : (
-                  <Copy className="w-3.5 h-3.5 text-slate-400" />
+                  <Copy className="w-3.5 h-3.5 text-steel-muted" />
                 )}
               </button>
             </div>
@@ -187,20 +187,20 @@ export const VerdictHero: React.FC<VerdictHeroProps> = ({
           {/* Metric Highlights Grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             {/* Probability of Default (PD) */}
-            <div className="bg-[#F4F4F6] border border-[#E4E4E7] p-3 space-y-2">
+            <div className="bg-vapor-subtle border border-vapor-border p-3 space-y-2">
               <div className="flex items-center justify-between text-xs font-mono">
-                <span className="flex items-center gap-1 text-[11px] text-[#52525B] uppercase">
-                  <Percent className="w-3.5 h-3.5 text-slate-500" />
+                <span className="flex items-center gap-1 text-[11px] text-steel-muted uppercase">
+                  <Percent className="w-3.5 h-3.5 text-steel-muted" />
                   <span>DEFAULT PROB (PD)</span>
                 </span>
-                <span className="font-bold text-xs text-[#0A0A0C]">
+                <span className="font-bold text-xs text-steel-ink">
                   {decision.default_probability !== null &&
                   decision.default_probability !== undefined
                     ? `${(decision.default_probability * 100).toFixed(2)}%`
                     : "N/A"}
                 </span>
               </div>
-              <div className="w-full bg-[#E4E4E7] h-1">
+              <div className="w-full bg-vapor-border h-1">
                 <div
                   className="h-full transition-all duration-500"
                   style={{
@@ -215,17 +215,17 @@ export const VerdictHero: React.FC<VerdictHeroProps> = ({
             </div>
 
             {/* Inference Telemetry */}
-            <div className="bg-[#F4F4F6] border border-[#E4E4E7] p-3 space-y-1 text-xs font-mono">
-              <div className="flex items-center justify-between text-[#52525B]">
+            <div className="bg-vapor-subtle border border-vapor-border p-3 space-y-1 text-xs font-mono">
+              <div className="flex items-center justify-between text-steel-muted">
                 <span className="flex items-center gap-1 uppercase text-[10px]">
                   <Cpu className="w-3.5 h-3.5" />
                   <span>INFERENCE LAG</span>
                 </span>
-                <span className="font-bold text-[#0029FF]">
+                <span className="font-bold text-steel-primary">
                   {latencyMs ? `${latencyMs} ms` : "14 ms"}
                 </span>
               </div>
-              <div className="flex items-center justify-between text-[#71717A] text-[10px]">
+              <div className="flex items-center justify-between text-steel-muted text-[10px]">
                 <span>MODE</span>
                 <span>{isSimulated ? "SIMULATED" : "FASTAPI 8000"}</span>
               </div>

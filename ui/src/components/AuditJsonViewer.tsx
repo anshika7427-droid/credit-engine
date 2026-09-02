@@ -56,12 +56,12 @@ export const AuditJsonViewer: React.FC<AuditJsonViewerProps> = ({
         let cls = "text-amber-400"; // number
         if (/^"/.test(match)) {
           if (/:$/.test(match)) {
-            cls = "text-[#00C2FF] font-semibold"; // key
+            cls = "text-[#67E8F9] font-semibold"; // key
           } else {
             cls = "text-emerald-300"; // string
           }
         } else if (/true|false/.test(match)) {
-          cls = "text-indigo-300 font-semibold"; // boolean
+          cls = "text-sky-300 font-semibold"; // boolean
         } else if (/null/.test(match)) {
           cls = "text-rose-400 font-semibold"; // null
         }
@@ -73,8 +73,8 @@ export const AuditJsonViewer: React.FC<AuditJsonViewerProps> = ({
   return (
     <div className="space-y-3 font-mono">
       <div className="flex items-center justify-between px-1">
-        <div className="flex items-center gap-2 text-xs text-[#52525B]">
-          <Code2 className="w-4 h-4 text-[#0029FF]" />
+        <div className="flex items-center gap-2 text-xs text-steel-muted">
+          <Code2 className="w-4 h-4 text-steel-primary" />
           <span className="uppercase font-bold">
             [ IMMUTABLE AUDIT PAYLOAD JSON ]
           </span>
@@ -82,11 +82,11 @@ export const AuditJsonViewer: React.FC<AuditJsonViewerProps> = ({
 
         <button
           onClick={handleCopy}
-          className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold uppercase bg-[#F4F4F6] hover:bg-[#0029FF] hover:text-white border border-[#E4E4E7] transition-colors cursor-pointer"
+          className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold uppercase bg-vapor-subtle hover:bg-steel-primary hover:text-white border border-vapor-border transition-colors cursor-pointer"
         >
           {copied ? (
             <>
-              <Check className="w-3.5 h-3.5 text-[#0029FF]" />
+              <Check className="w-3.5 h-3.5 text-steel-primary" />
               <span>COPIED</span>
             </>
           ) : (
@@ -98,14 +98,14 @@ export const AuditJsonViewer: React.FC<AuditJsonViewerProps> = ({
         </button>
       </div>
 
-      <div className="relative border border-[#E4E4E7] bg-[#0A0A0C] shadow-sm">
+      <div className="relative border border-[#1A2830] bg-[#0B1519] shadow-sm">
         <pre
           className="p-4 text-xs font-mono overflow-x-auto max-h-[420px] leading-relaxed select-text text-white/90"
           dangerouslySetInnerHTML={{ __html: formatJsonToHtml(jsonString) }}
         />
       </div>
 
-      <div className="flex items-center justify-between text-[10px] text-[#71717A] px-1">
+      <div className="flex items-center justify-between text-[10px] text-steel-muted px-1">
         <span>Validated schema: Pydantic v2</span>
         <span>Size: ~{(jsonString.length / 1024).toFixed(1)} KB</span>
       </div>

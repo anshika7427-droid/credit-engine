@@ -1,100 +1,93 @@
-import React, { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import React, { useEffect, useState } from "react";
+import { motion } from "framer-motion";
 
 interface PreloaderProps {
   onComplete: () => void;
 }
 
 export const Preloader: React.FC<PreloaderProps> = ({ onComplete }) => {
-  const [progress, setProgress] = useState(0);
-  const [isFinished, setIsFinished] = useState(false);
+  const [percent, setPercent] = useState(0);
+  const [isReadyToExit, setIsReadyToExit] = useState(false);
 
   useEffect(() => {
-    const duration = 1200; // 1.2 seconds count-up
-    const startTime = performance.now();
+    // Deterministic tick interval: hits 100% smoothly in ~1.5s
+    const timer = setInterval(() => {
+      setPercent((prev) => {
+        if (prev >= 100) {
+          clearInterval(timer);
+          return 100;
+        }
+        // Consistent increments that reliably land on 100
+        const step = Math.floor(Math.random() * 4) + 3;
+        const next = prev + step;
+        return next >= 100 ? 100 : next;
+      });
+    }, 35);
 
-    const updateProgress = (now: number) => {
-      const elapsed = now - startTime;
-      const pct = Math.min(100, Math.round((elapsed / duration) * 100));
-      setProgress(pct);
+    return () => clearInterval(timer);
+  }, []);
 
-      if (pct < 100) {
-        requestAnimationFrame(updateProgress);
-      } else {
-        setTimeout(() => {
-          setIsFinished(true);
-          setTimeout(onComplete, 800); // Allow wipe up transition to complete
-        }, 150);
-      }
-    };
-
-    const animId = requestAnimationFrame(updateProgress);
-    return () => cancelAnimationFrame(animId);
-  }, [onComplete]);
+  // When percent reaches exactly 100, pause briefly so user sees 100%, then trigger curtain wipe
+  useEffect(() => {
+    if (percent === 100) {
+      const exitTimer = setTimeout(() => {
+        setIsReadyToExit(true);
+      }, 250);
+      return () => clearTimeout(exitTimer);
+    }
+  }, [percent]);
 
   return (
-    <AnimatePresence>
-      {!isFinished && (
-        <motion.div
-          key="preloader"
-          initial={{ y: 0 }}
-          exit={{
-            y: "-100%",
-            transition: { ease: [0.85, 0, 0.15, 1], duration: 0.8 },
-          }}
-          className="fixed inset-0 z-50 bg-[#FFFFFF] flex flex-col justify-between p-6 sm:p-12 select-none overflow-hidden"
-        >
-          {/* Top Row: System Identity */}
-          <div className="flex items-center justify-between border-b border-[#E4E4E7] pb-4">
-            <div className="flex items-center gap-3">
-              <span className="font-mono text-xs font-bold uppercase tracking-widest text-[#0A0A0C]">
-                AURA
-              </span>
-              <span className="font-mono text-[10px] uppercase text-[#71717A] tracking-wider">
-                [ALTERNATIVE CREDIT OS // V1.4]
-              </span>
-            </div>
-            <div className="font-mono text-[11px] text-[#52525B] uppercase hidden sm:block">
-              INITIALIZING TELEMETRY KERNEL...
-            </div>
-          </div>
+    <motion.div
+      className="fixed inset-0 z-[100] flex flex-col justify-between p-8 md:p-14 bg-[#0A0A0C] text-white select-none pointer-events-none"
+      initial={{ y: 0 }}
+      animate={isReadyToExit ? { y: "-100%" } : { y: 0 }}
+      transition={{
+        duration: 0.8,
+        ease: [0.85, 0, 0.15, 1], // Editorial curtain wipe easing
+      }}
+      onAnimationComplete={() => {
+        if (isReadyToExit) {
+          onComplete();
+        }
+      }}
+    >
+      {/* Top Header */}
+      <div className="flex items-center justify-between text-xs font-mono tracking-widest text-zinc-400">
+        <div className="flex items-center gap-2">
+          <span className="w-2 h-2 rounded-full bg-[#0E7490] animate-pulse" />
+          <span>AURA [ALTERNATIVE CREDIT OS // V1.4]</span>
+        </div>
+        <span>INITIALIZING TELEMETRY KERNEL...</span>
+      </div>
 
-          {/* Center: Pulsing Electric Blue Hairline Expansion */}
-          <div className="relative w-full py-8">
-            <div className="w-full bg-[#E4E4E7] h-[2px] relative overflow-hidden">
-              <motion.div
-                className="h-full bg-[#0029FF]"
-                style={{ width: `${progress}%` }}
-                transition={{ ease: "easeOut" }}
-              />
-            </div>
-            <div className="flex justify-between text-[10px] font-mono text-[#71717A] mt-3 uppercase tracking-widest">
-              <span>UPI &bull; TELECOM &bull; GST FLOWS</span>
-              <span>150-TREE GRADIENT BOOSTER</span>
-            </div>
-          </div>
+      {/* Middle Hairline Progress */}
+      <div className="w-full relative">
+        <div className="h-[1px] w-full bg-zinc-800 relative overflow-hidden">
+          <div
+            className="h-full bg-[#0E7490] transition-all duration-75 ease-out"
+            style={{ width: `${percent}%` }}
+          />
+        </div>
+        <div className="flex justify-between items-center text-[10px] font-mono text-zinc-500 mt-3 tracking-wider">
+          <span>UPI • TELECOM • GST FLOWS</span>
+          <span>150-TREE GRADIENT BOOSTER</span>
+        </div>
+      </div>
 
-          {/* Bottom Row: Dynamic Numerical Counter */}
-          <div className="flex items-end justify-between border-t border-[#E4E4E7] pt-4">
-            <div className="space-y-1">
-              <span className="font-mono text-[10px] uppercase text-[#71717A] tracking-widest block">
-                SYSTEM CALIBRATION
-              </span>
-              <span className="font-mono text-xs text-[#0A0A0C] font-semibold">
-                TREESHAP MATRIX READY
-              </span>
-            </div>
+      {/* Bottom Counter */}
+      <div className="flex justify-between items-end">
+        <div className="text-[11px] font-mono tracking-widest text-zinc-400">
+          SYSTEM CALIBRATION<br />
+          <span className="text-white font-bold">TREESHAP MATRIX READY</span>
+        </div>
 
-            {/* Huge bold count-up number */}
-            <div className="font-mono text-6xl sm:text-8xl lg:text-9xl font-extrabold tracking-tighter text-[#0A0A0C] leading-none">
-              {progress}
-              <span className="text-2xl sm:text-4xl lg:text-5xl text-[#0029FF] ml-1 font-bold">
-                %
-              </span>
-            </div>
-          </div>
-        </motion.div>
-      )}
-    </AnimatePresence>
+        {/* Counter Display: Strictly shows 100% before sliding */}
+        <div className="text-8xl md:text-9xl font-mono font-bold tracking-tighter text-white tabular-nums flex items-baseline">
+          <span>{percent}</span>
+          <span className="text-[#0E7490] text-5xl md:text-6xl ml-1">%</span>
+        </div>
+      </div>
+    </motion.div>
   );
 };

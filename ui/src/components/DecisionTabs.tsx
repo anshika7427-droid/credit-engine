@@ -20,9 +20,9 @@ export const DecisionTabs: React.FC<DecisionTabsProps> = ({
   const [activeTab, setActiveTab] = useState<DecisionTabId>("shap");
 
   return (
-    <div className="bg-white border border-[#E4E4E7] overflow-hidden shadow-sm">
+    <div className="bg-vapor-card border border-vapor-border overflow-hidden shadow-sm">
       {/* Tab Navigation Header */}
-      <div className="flex items-center justify-between px-4 sm:px-6 pt-3 pb-2.5 border-b border-[#E4E4E7] bg-[#F4F4F6]">
+      <div className="flex items-center justify-between px-4 sm:px-6 pt-3 pb-2.5 border-b border-vapor-border bg-vapor-subtle">
         <div className="flex items-center gap-1 sm:gap-2">
           {/* Tab 1: Visual SHAP Drivers */}
           <button
@@ -30,8 +30,8 @@ export const DecisionTabs: React.FC<DecisionTabsProps> = ({
             className={cn(
               "flex items-center gap-1.5 px-3 py-1.5 text-xs font-mono uppercase font-bold transition-all cursor-pointer",
               activeTab === "shap"
-                ? "bg-[#0A0A0C] text-white shadow-sm"
-                : "text-[#52525B] hover:text-[#0A0A0C]"
+                ? "bg-steel-ink text-white shadow-sm"
+                : "text-steel-muted hover:text-steel-ink"
             )}
           >
             <BarChart3 className="w-3.5 h-3.5" />
@@ -44,8 +44,8 @@ export const DecisionTabs: React.FC<DecisionTabsProps> = ({
             className={cn(
               "flex items-center gap-1.5 px-3 py-1.5 text-xs font-mono uppercase font-bold transition-all cursor-pointer",
               activeTab === "adverse"
-                ? "bg-[#0A0A0C] text-white shadow-sm"
-                : "text-[#52525B] hover:text-[#0A0A0C]"
+                ? "bg-steel-ink text-white shadow-sm"
+                : "text-steel-muted hover:text-steel-ink"
             )}
           >
             <FileText className="w-3.5 h-3.5" />
@@ -61,24 +61,33 @@ export const DecisionTabs: React.FC<DecisionTabsProps> = ({
             className={cn(
               "flex items-center gap-1.5 px-3 py-1.5 text-xs font-mono uppercase font-bold transition-all cursor-pointer",
               activeTab === "json"
-                ? "bg-[#0A0A0C] text-white shadow-sm"
-                : "text-[#52525B] hover:text-[#0A0A0C]"
+                ? "bg-steel-ink text-white shadow-sm"
+                : "text-steel-muted hover:text-steel-ink"
             )}
           >
             <Code2 className="w-3.5 h-3.5" />
             <span>AUDIT JSON</span>
           </button>
         </div>
+
+        {/* Tab Context Hint */}
+        <div className="hidden sm:block text-[11px] font-mono text-steel-muted">
+          {activeTab === "shap" && "TREE-SHAP EXPLAINER"}
+          {activeTab === "adverse" && "FCRA § 615 COMPLIANCE"}
+          {activeTab === "json" && "AUDIT TRAIL PAYLOAD"}
+        </div>
       </div>
 
-      {/* Tab Content Body */}
+      {/* Tab Panels */}
       <div className="p-4 sm:p-6">
         {activeTab === "shap" && (
           <ShapDriversChart profile={profile} decision={decision} />
         )}
+
         {activeTab === "adverse" && (
           <AdverseActionNotice profile={profile} decision={decision} />
         )}
+
         {activeTab === "json" && (
           <AuditJsonViewer profile={profile} decision={decision} />
         )}

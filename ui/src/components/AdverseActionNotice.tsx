@@ -80,18 +80,18 @@ Issued in compliance with the Fair Credit Reporting Act (FCRA) and RBI Digital L
 
   return (
     <div className="space-y-4">
-      <div className="bg-white border border-[#E4E4E7] p-5 sm:p-7 shadow-sm space-y-5 font-sans relative">
-        <div className="border-b border-[#E4E4E7] pb-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+      <div className="bg-vapor-card border border-vapor-border p-5 sm:p-7 shadow-sm space-y-5 font-sans relative">
+        <div className="border-b border-vapor-border pb-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div>
             <div className="flex items-center gap-2 font-mono">
-              <span className="text-xs font-bold uppercase tracking-widest text-[#0029FF]">
+              <span className="text-xs font-bold uppercase tracking-widest text-steel-primary">
                 [ REGULATORY DISCLOSURE LETTER ]
               </span>
-              <span className="text-[10px] px-2 py-0.5 bg-[#F4F4F6] text-[#52525B] border border-[#E4E4E7]">
+              <span className="text-[10px] px-2 py-0.5 bg-vapor-subtle text-steel-muted border border-vapor-border">
                 FCRA § 615 &bull; RBI DLG-2022
               </span>
             </div>
-            <h3 className="text-base sm:text-lg font-bold text-[#0A0A0C] m-0 mt-1">
+            <h3 className="text-base sm:text-lg font-bold text-steel-ink m-0 mt-1">
               Statement of Credit Determination or Adverse Action
             </h3>
           </div>
@@ -99,11 +99,11 @@ Issued in compliance with the Fair Credit Reporting Act (FCRA) and RBI Digital L
           <div className="flex items-center gap-2 shrink-0">
             <button
               onClick={handleCopyNotice}
-              className="flex items-center gap-1.5 px-3 py-1.5 font-mono text-xs font-bold uppercase bg-[#F4F4F6] hover:bg-[#0029FF] hover:text-white border border-[#E4E4E7] transition-colors cursor-pointer"
+              className="flex items-center gap-1.5 px-3 py-1.5 font-mono text-xs font-bold uppercase bg-vapor-subtle hover:bg-steel-primary hover:text-white border border-vapor-border transition-colors cursor-pointer"
             >
               {copied ? (
                 <>
-                  <Check className="w-3.5 h-3.5 text-[#0029FF]" />
+                  <Check className="w-3.5 h-3.5 text-steel-primary" />
                   <span>COPIED</span>
                 </>
               ) : (
@@ -117,47 +117,47 @@ Issued in compliance with the Fair Credit Reporting Act (FCRA) and RBI Digital L
             <button
               onClick={() => window.print()}
               title="Print regulatory disclosure"
-              className="p-1.5 bg-[#F4F4F6] hover:bg-slate-200 border border-[#E4E4E7] transition-colors cursor-pointer hidden sm:block"
+              className="p-1.5 bg-vapor-subtle hover:bg-vapor-border border border-vapor-border transition-colors cursor-pointer hidden sm:block"
             >
-              <Printer className="w-3.5 h-3.5" />
+              <Printer className="w-3.5 h-3.5 text-steel-muted" />
             </button>
           </div>
         </div>
 
         {/* Metadata Grid */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs bg-[#F4F4F6] border border-[#E4E4E7] p-3 font-mono">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs bg-vapor-subtle border border-vapor-border p-3 font-mono">
           <div>
-            <span className="text-[10px] text-[#71717A] uppercase block">
+            <span className="text-[10px] text-steel-muted uppercase block">
               Application ID
             </span>
-            <span className="text-[#0A0A0C] font-semibold truncate block">
+            <span className="text-steel-ink font-semibold truncate block">
               {decision.application_id}
             </span>
           </div>
           <div>
-            <span className="text-[10px] text-[#71717A] uppercase block">
+            <span className="text-[10px] text-steel-muted uppercase block">
               Decision Date
             </span>
-            <span className="text-[#0A0A0C]">
+            <span className="text-steel-ink">
               {new Date().toLocaleDateString("en-IN")}
             </span>
           </div>
           <div>
-            <span className="text-[10px] text-[#71717A] uppercase block">
+            <span className="text-[10px] text-steel-muted uppercase block">
               Credit Score
             </span>
-            <span className="text-[#0029FF] font-bold">
+            <span className="text-steel-primary font-bold">
               {decision.credit_score} / 900
             </span>
           </div>
           <div>
-            <span className="text-[10px] text-[#71717A] uppercase block">
+            <span className="text-[10px] text-steel-muted uppercase block">
               Status Verdict
             </span>
             <span
               className={
                 decision.status === "APPROVED"
-                  ? "text-[#0029FF] font-bold"
+                  ? "text-steel-primary font-bold"
                   : decision.status === "MANUAL_REVIEW"
                   ? "text-amber-800 font-bold"
                   : "text-rose-700 font-bold"
@@ -183,7 +183,7 @@ Issued in compliance with the Fair Credit Reporting Act (FCRA) and RBI Digital L
 
         {/* Principal Reasons */}
         <div className="space-y-2.5">
-          <h4 className="text-xs font-mono font-bold text-[#0A0A0C] uppercase tracking-wider m-0">
+          <h4 className="text-xs font-mono font-bold text-steel-ink uppercase tracking-wider m-0">
             {isAdverse
               ? "[ INFLUENCING RISK FACTORS // TREESHAP ATTRIBUTION ]"
               : "[ SATISFIED UNDERWRITING CRITERIA ]"}
@@ -211,12 +211,12 @@ Issued in compliance with the Fair Credit Reporting Act (FCRA) and RBI Digital L
               ))}
             </div>
           ) : (
-            <div className="p-4 bg-blue-50/50 border border-[#0029FF]/30 text-xs space-y-1.5">
-              <div className="flex items-center gap-2 text-[#0029FF] font-mono font-bold uppercase">
+            <div className="p-4 bg-steel-tint border border-steel-primary/30 text-xs space-y-1.5">
+              <div className="flex items-center gap-2 text-steel-primary font-mono font-bold uppercase">
                 <ShieldCheck className="w-4 h-4" />
                 <span>APPROVAL CRITERIA SATISFIED &mdash; NO ADVERSE NOTICE REQUIRED</span>
               </div>
-              <p className="text-[11px] text-[#52525B] m-0 leading-relaxed">
+              <p className="text-[11px] text-steel-muted m-0 leading-relaxed">
                 The applicant satisfies all risk tier thresholds with disciplined telecom consistency (
                 {Math.round(profile.telecom_recharge_regularity * 100)}%), sustained digital inflow ({formatINR(profile.monthly_inflow)}), and zero policy floor violations.
               </p>
@@ -225,7 +225,7 @@ Issued in compliance with the Fair Credit Reporting Act (FCRA) and RBI Digital L
         </div>
 
         {/* Consumer Statutory Rights */}
-        <div className="pt-4 border-t border-[#E4E4E7] text-[11px] text-[#71717A] leading-relaxed font-mono">
+        <div className="pt-4 border-t border-vapor-border text-[11px] text-steel-muted leading-relaxed font-mono">
           <p>
             Under Section 615 of the Fair Credit Reporting Act and the RBI Guidelines on Digital Lending (2022), you have the right to inspect the alternative data report utilized in this automated determination.
           </p>
