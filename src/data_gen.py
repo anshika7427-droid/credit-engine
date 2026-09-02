@@ -1,5 +1,6 @@
 import numpy as np
 import pandas as pd
+
 from src.config import DATA_PATH
 
 np.random.seed(42)

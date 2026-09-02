@@ -1,4 +1,5 @@
-from typing import List, Optional
+from typing import List, Optional  # noqa: UP035
+
 from pydantic import BaseModel, Field
 
 

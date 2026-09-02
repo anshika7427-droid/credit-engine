@@ -1,6 +1,8 @@
 import datetime
-from sqlalchemy import Column, DateTime, Float, Integer, JSON, String, create_engine
+
+from sqlalchemy import JSON, Column, DateTime, Float, Integer, String, create_engine
 from sqlalchemy.orm import declarative_base, sessionmaker
+
 from src.config import DB_PATH
 
 DATABASE_URL = f"sqlite:///{DB_PATH}"
