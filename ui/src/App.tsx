@@ -145,14 +145,15 @@ export const App: React.FC = () => {
   };
 
   // Submit evaluation
-  const handleEvaluate = async () => {
+  const handleEvaluate = async (overrideProfile?: BorrowerProfile) => {
     setIsLoading(true);
     setErrorMessage(null);
+    const targetProfile = overrideProfile || profile;
 
     try {
       if (isSimulated) {
         await new Promise((r) => setTimeout(r, 220));
-        const simResult = simulateCreditScoring(profile);
+        const simResult = simulateCreditScoring(targetProfile);
         setDecision(simResult);
         setLatencyMs(14);
 
@@ -163,7 +164,7 @@ export const App: React.FC = () => {
             minute: "2-digit",
             second: "2-digit",
           }),
-          profile: { ...profile },
+          profile: { ...targetProfile },
           result: simResult,
           latencyMs: 14,
         };
@@ -171,7 +172,7 @@ export const App: React.FC = () => {
         return;
       }
 
-      const res = await submitCreditEvaluation(profile);
+      const res = await submitCreditEvaluation(targetProfile);
       setDecision(res.data);
       setLatencyMs(res.latencyMs);
 
@@ -182,7 +183,7 @@ export const App: React.FC = () => {
           minute: "2-digit",
           second: "2-digit",
         }),
-        profile: { ...profile },
+        profile: { ...targetProfile },
         result: res.data,
         latencyMs: res.latencyMs,
       };

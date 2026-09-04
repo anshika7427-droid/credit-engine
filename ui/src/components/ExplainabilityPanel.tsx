@@ -20,6 +20,7 @@ const FEATURE_DESCRIPTIONS: Record<string, string> = {
   utility_payment_delay_days: "Past billing delinquency correlates with propensity to default.",
   ecommerce_cancellation_rate: "Elevated transaction abandonment or returns flags impulsive behavior.",
   gst_filing_punctuality: "Disciplined statutory tax filing confirms legitimate business turnover.",
+  mobility_activity_score: "Active FASTag highway transit and sustained mileage confirm active daily commercial livelihood.",
 };
 
 export const ExplainabilityPanel: React.FC<ExplainabilityPanelProps> = ({

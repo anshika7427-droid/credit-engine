@@ -1,4 +1,12 @@
-import type { BorrowerProfile, CreditScoreResponse } from "../types/credit";
+import type {
+  BorrowerProfile,
+  CreditScoreResponse,
+  ConsentInitiatePayload,
+  ConsentInitiateResponse,
+  ConsentVerifyPayload,
+  ConsentArtifactResponse,
+  RawIngestionPayload,
+} from "../types/credit";
 
 const PRIMARY_API_URL = "http://127.0.0.1:8000/api/v1/score";
 const PROXY_API_URL = "/api/v1/score";
@@ -97,6 +105,139 @@ export async function submitCreditEvaluation(
 }
 
 /**
+ * Initiate RBI Account Aggregator consent session
+ */
+export async function initiateAAConsent(
+  payload: ConsentInitiatePayload
+): Promise<ConsentInitiateResponse> {
+  try {
+    let response: Response;
+    try {
+      response = await fetch("/api/v1/consent/initiate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+    } catch {
+      response = await fetch("http://127.0.0.1:8000/api/v1/consent/initiate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+    }
+
+    if (!response.ok) {
+      throw new Error(`Failed to initiate AA consent: ${response.statusText}`);
+    }
+    return await response.json();
+  } catch {
+    // Fallback mock session
+    return {
+      session_id: `AA-SESS-${Math.random().toString(36).substring(2, 9).toUpperCase()}`,
+      phone_number: payload.phone_number,
+      vpa_handle: payload.vpa_handle,
+      fip_id: payload.fip_id || "HDFC_BANK",
+      purpose_code: "CREDIT_UNDERWRITING",
+      data_range_days: 180,
+      status: "PENDING",
+      mock_otp: "882190",
+      created_at: new Date().toISOString(),
+      expires_at: new Date(Date.now() + 10 * 60 * 1000).toISOString(),
+      message: "RBI Account Aggregator consent request pushed to user handle.",
+    };
+  }
+}
+
+/**
+ * Verify AA OTP and retrieve signed consent artifact + mock telemetry
+ */
+export async function verifyAAConsent(
+  payload: ConsentVerifyPayload
+): Promise<ConsentArtifactResponse> {
+  try {
+    let response: Response;
+    try {
+      response = await fetch("/api/v1/consent/verify", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+    } catch {
+      response = await fetch("http://127.0.0.1:8000/api/v1/consent/verify", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+    }
+
+    if (!response.ok) {
+      throw new Error(`Failed to verify AA consent: ${response.statusText}`);
+    }
+    return await response.json();
+  } catch {
+    // Fallback mock artifact response
+    return {
+      phone_number: payload.phone_number || "+91-98765-43210",
+      vpa_handle: payload.vpa_handle || "ravi.fleet@okhdfcbank",
+      data_range_days: 180,
+      purpose_code: "CREDIT_UNDERWRITING",
+      status: "ACTIVE",
+      artifact_token: "AA-IND-CONSENT-88219-X7B",
+      consent_artifact_id: "AA-88219",
+      fiu_id: "AURA Autonomous Underwriting",
+      fip_id: payload.fip_id || "HDFC Bank",
+      created_at: new Date().toISOString(),
+      expires_at: new Date(Date.now() + 180 * 24 * 3600 * 1000).toISOString(),
+    };
+  }
+}
+
+/**
+ * Stage 1: Raw Telemetry Ingestion & Feature Synthesis
+ */
+export async function synthesizeRawTelemetry(
+  payload: RawIngestionPayload
+): Promise<BorrowerProfile> {
+  try {
+    let response: Response;
+    try {
+      response = await fetch("/api/v1/ingest/synthesize", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+    } catch {
+      response = await fetch("http://127.0.0.1:8000/api/v1/ingest/synthesize", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+    }
+
+    if (!response.ok) {
+      throw new Error(`Synthesis API error: ${response.statusText}`);
+    }
+    return await response.json();
+  } catch {
+    // Fallback synthesis
+    return {
+      borrower_type: payload.borrower_type,
+      monthly_inflow: 44500,
+      upi_tx_count_monthly: 82,
+      upi_debit_to_credit_ratio: 0.72,
+      cashflow_volatility: 0.21,
+      utility_payment_delay_days: 2,
+      telecom_recharge_regularity: 0.98,
+      gst_filing_punctuality: payload.gst_filing_punctuality || 0.0,
+      ecommerce_cancellation_rate: payload.ecommerce_cancellation_rate || 0.03,
+      mobility_activity_score: 86.5,
+      consent_artifact_id: payload.consent_artifact_id || "AA-88219",
+      data_source_mode: "AA_INGESTED",
+    };
+  }
+}
+
+/**
  * Local simulation engine matching Python backend rules (rules.py and main.py)
  * Used as fallback / playground when backend server is offline or simulation is toggled.
  */
@@ -117,6 +258,9 @@ export function simulateCreditScoring(profile: BorrowerProfile): CreditScoreResp
         "Risk factor: upi_debit_to_credit_ratio",
         "Risk factor: cashflow_volatility",
       ],
+      consent_artifact_id: profile.consent_artifact_id,
+      data_source_mode: profile.data_source_mode,
+      mobility_activity_score: profile.mobility_activity_score,
     };
   }
 
@@ -133,6 +277,9 @@ export function simulateCreditScoring(profile: BorrowerProfile): CreditScoreResp
         "Risk factor: utility_payment_delay_days",
         "Risk factor: utility_billing_delinquency",
       ],
+      consent_artifact_id: profile.consent_artifact_id,
+      data_source_mode: profile.data_source_mode,
+      mobility_activity_score: profile.mobility_activity_score,
     };
   }
 
@@ -149,6 +296,9 @@ export function simulateCreditScoring(profile: BorrowerProfile): CreditScoreResp
         "Risk factor: upi_tx_count_monthly",
         "Risk factor: thin_file_insufficient_history",
       ],
+      consent_artifact_id: profile.consent_artifact_id,
+      data_source_mode: profile.data_source_mode,
+      mobility_activity_score: profile.mobility_activity_score,
     };
   }
 
@@ -156,22 +306,22 @@ export function simulateCreditScoring(profile: BorrowerProfile): CreditScoreResp
   let scorePoints = 580;
 
   // Monthly inflow impact
-  if (profile.monthly_inflow >= 75000) scorePoints += 80;
-  else if (profile.monthly_inflow >= 40000) scorePoints += 50;
+  if (profile.monthly_inflow >= 75000) scorePoints += 70;
+  else if (profile.monthly_inflow >= 40000) scorePoints += 45;
   else if (profile.monthly_inflow < 20000) scorePoints -= 40;
 
   // UPI volume
-  if (profile.upi_tx_count_monthly >= 70) scorePoints += 60;
-  else if (profile.upi_tx_count_monthly >= 30) scorePoints += 30;
+  if (profile.upi_tx_count_monthly >= 70) scorePoints += 55;
+  else if (profile.upi_tx_count_monthly >= 30) scorePoints += 25;
   else scorePoints -= 30;
 
   // Debit/Credit ratio
-  if (profile.upi_debit_to_credit_ratio <= 0.75) scorePoints += 60;
+  if (profile.upi_debit_to_credit_ratio <= 0.75) scorePoints += 55;
   else if (profile.upi_debit_to_credit_ratio <= 0.90) scorePoints += 20;
   else scorePoints -= (profile.upi_debit_to_credit_ratio - 0.9) * 120;
 
   // Volatility
-  if (profile.cashflow_volatility <= 0.25) scorePoints += 50;
+  if (profile.cashflow_volatility <= 0.25) scorePoints += 45;
   else scorePoints -= (profile.cashflow_volatility - 0.25) * 100;
 
   // Utility delay
@@ -182,19 +332,25 @@ export function simulateCreditScoring(profile: BorrowerProfile): CreditScoreResp
   if (profile.telecom_recharge_regularity >= 0.9) scorePoints += 40;
   else scorePoints -= (1.0 - profile.telecom_recharge_regularity) * 70;
 
+  // Mobility & Fleet Index (Stage 1 Feature)
+  const mobility = profile.mobility_activity_score ?? 50.0;
+  if (mobility >= 75) scorePoints += 45;
+  else if (mobility >= 55) scorePoints += 20;
+  else if (mobility < 30) scorePoints -= 35;
+
   // GST punctuality
   if (profile.borrower_type === "kirana_merchant") {
-    if (profile.gst_filing_punctuality >= 0.8) scorePoints += 50;
-    else scorePoints -= 30;
+    if (profile.gst_filing_punctuality >= 0.8) scorePoints += 45;
+    else scorePoints -= 25;
   }
 
   // E-commerce cancellation
   if (profile.ecommerce_cancellation_rate <= 0.05) scorePoints += 20;
-  else scorePoints -= profile.ecommerce_cancellation_rate * 120;
+  else scorePoints -= profile.ecommerce_cancellation_rate * 100;
 
   // Bound score 300 - 900
-  const finalScore = Math.min(890, Math.max(320, Math.round(scorePoints)));
-  const defaultProb = Math.max(0.015, Math.min(0.95, (900 - finalScore) / 600));
+  const finalScore = Math.min(895, Math.max(320, Math.round(scorePoints)));
+  const defaultProb = Math.max(0.012, Math.min(0.95, (900 - finalScore) / 600));
 
   let status: "APPROVED" | "MANUAL_REVIEW" | "REJECTED";
   let tier: "PRIME" | "NEAR_PRIME" | "SUBPRIME" | "HIGH_RISK";
@@ -214,6 +370,9 @@ export function simulateCreditScoring(profile: BorrowerProfile): CreditScoreResp
   const positives: string[] = [];
   const adverse: string[] = [];
 
+  if (profile.mobility_activity_score >= 70) {
+    positives.push("Strong signal: mobility_activity_score");
+  }
   if (profile.telecom_recharge_regularity >= 0.88) {
     positives.push("Strong signal: telecom_recharge_regularity");
   }
@@ -222,9 +381,6 @@ export function simulateCreditScoring(profile: BorrowerProfile): CreditScoreResp
   }
   if (profile.monthly_inflow >= 35000) {
     positives.push("Strong signal: monthly_inflow");
-  }
-  if (profile.upi_debit_to_credit_ratio < 0.8) {
-    positives.push("Strong signal: upi_debit_to_credit_ratio");
   }
 
   if (profile.utility_payment_delay_days > 7) {
@@ -235,6 +391,9 @@ export function simulateCreditScoring(profile: BorrowerProfile): CreditScoreResp
   }
   if (profile.upi_debit_to_credit_ratio > 0.92) {
     adverse.push("Risk factor: upi_debit_to_credit_ratio");
+  }
+  if (profile.mobility_activity_score < 35) {
+    adverse.push("Risk factor: mobility_activity_score");
   }
   if (profile.ecommerce_cancellation_rate > 0.12) {
     adverse.push("Risk factor: ecommerce_cancellation_rate");
@@ -249,5 +408,8 @@ export function simulateCreditScoring(profile: BorrowerProfile): CreditScoreResp
     knockout_reason: null,
     top_positive_factors: positives.slice(0, 2),
     adverse_action_reasons: adverse.slice(0, 3),
+    consent_artifact_id: profile.consent_artifact_id,
+    data_source_mode: profile.data_source_mode,
+    mobility_activity_score: profile.mobility_activity_score,
   };
 }

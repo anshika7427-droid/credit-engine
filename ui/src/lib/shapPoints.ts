@@ -110,7 +110,25 @@ export function computeShapPointAttributions(
         : "Persistent billing delays indicate recurring cash strain",
   });
 
-  // 7. GST Filing Punctuality (Kirana Priority)
+  // 7. Mobility & Fleet Activity Index (Stage 1 Feature)
+  const mobilityScore = profile.mobility_activity_score ?? 50.0;
+  const mobilityDelta = mobilityScore - 50.0;
+  const mobilityPts = Math.round(mobilityDelta * 1.15);
+  drivers.push({
+    featureKey: "mobility_activity_score",
+    label: "Mobility & Fleet Index",
+    points: Math.max(-50, Math.min(60, mobilityPts)),
+    category: "volume",
+    displayValue: `${Math.round(mobilityScore)}/100`,
+    description:
+      mobilityScore >= 70
+        ? "Active commercial transit and verified mileage confirms continuous livelihood"
+        : mobilityScore >= 40
+        ? "Localized route operations with moderate transit activity"
+        : "Subdued vehicle movement flags restricted commercial delivery radius",
+  });
+
+  // 8. GST Filing Punctuality (Kirana Priority)
   if (profile.borrower_type === "kirana_merchant" || profile.gst_filing_punctuality > 0) {
     const gstDelta = profile.gst_filing_punctuality - 0.75;
     const gstPts = Math.round(gstDelta * 140);
@@ -127,7 +145,7 @@ export function computeShapPointAttributions(
     });
   }
 
-  // 8. E-Commerce Order Cancellation
+  // 9. E-Commerce Order Cancellation
   const ecomDelta = 0.06 - profile.ecommerce_cancellation_rate;
   const ecomPts = Math.round(ecomDelta * 200);
   drivers.push({
